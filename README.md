@@ -1,4 +1,4 @@
 # F2R-HMT
-The code for paper F2R-HMT: A Heterogeneous Masked-Transformer forGraph-Based Click-Through Rate Prediction.
+The code for paper Large-scale Graph-Based Click-Through Rate Prediction via Heterogeneous Masked-Transformer.
 
-This project only contains the codes of dataloader and models, with a small demo dataset. We plan to release a subset of the anonymized dataset for reproduction in the future.
+This project only contains the codes of dataloader and models, with a small demo dataset. We will release a subset of the anonymized dataset for reproduction in the future.
