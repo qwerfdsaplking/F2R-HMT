@@ -453,9 +453,10 @@ class Transformer_Model(torch.nn.Module):
 
         #===========================sparse adjacent matrix=============================
         if 'masked' in self.args.gnn_type:
+            x_norm = torch.norm(x_sp_all,dim=-1,p=2)
             x_sp_all = x_sp_all.reshape(batch_size, self.max_len, -1)
-            sparse_adj = torch.matmul(x_sp_all, x_sp_all.transpose(1,2))
-            sparse_adj += torch.eye(sparse_adj.shape[-1]).to(sparse_adj.device)
+            sparse_adj = torch.matmul(x_sp_all, x_sp_all.transpose(1,2))/(torch.matmul(x_norm.unsqueeze(-1),x_norm.unsqueeze(-1).transpose(1,2)))
+            #sparse_adj += torch.eye(sparse_adj.shape[-1]).to(sparse_adj.device)
         else:
             sparse_adj=0
 
