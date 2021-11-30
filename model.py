@@ -336,7 +336,7 @@ class Transformer_Model(torch.nn.Module):
         super(Transformer_Model, self).__init__()
         self.hidden_size = args.hidden_size
         self.out_size = args.out_size
-        self.node_type_num = args.node_type_num  # 去掉tag
+        self.node_type_num = args.node_type_num  #
         self.gnn_type = args.gnn_type
         self.gnn_num = args.gnn_num
         self.dense_size = 224 if 'dense' in args.feature_mode else 0
@@ -374,15 +374,15 @@ class Transformer_Model(torch.nn.Module):
 
         if args.pool_type=='split':
             out_mid_size = args.hidden_size*4
-            self.mid_linear = nn.Linear(out_mid_size, args.hidden_size)  # 两个中心节点+两个子图pooling
+            self.mid_linear = nn.Linear(out_mid_size, args.hidden_size)  # 
             self.out_linear = nn.Linear(args.hidden_size, args.out_size)
         elif args.pool_type=='all':
             out_mid_size = args.hidden_size*3
-            self.mid_linear = nn.Linear(out_mid_size, args.hidden_size)  # 两个中心节点+两个子图pooling
+            self.mid_linear = nn.Linear(out_mid_size, args.hidden_size)  # 
             self.out_linear = nn.Linear(args.hidden_size, args.out_size)
         elif args.pool_type=='cross':
             self.bi_mat_list = nn.ParameterList([nn.Parameter(torch.randn(args.hidden_size,args.hidden_size)) for _ in range(3)])
-            for i in range(len(self.bi_mat_list)):#初始化
+            for i in range(len(self.bi_mat_list)):#
                 glorot(self.bi_mat_list[i])
         elif args.pool_type=='att':
             self.v_att_bi = nn.Parameter(torch.randn(args.hidden_size,args.hidden_size))
