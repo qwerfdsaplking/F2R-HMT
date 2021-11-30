@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# 从main继承，改变的data读取，因为保存的数据多了x_in_vsg和x_in_usg，使用了gnn，并将边对称化
 from tensorflow.python.util import deprecation
 deprecation._PRINT_DEPRECATION_WARNINGS = False
 
@@ -168,7 +167,7 @@ def tm_collate_fn(data_list, feat_matrix, args):
     batch_x = torch.zeros(batch_size, max_len, feat_dim)
     batch_adj = torch.zeros(batch_size, max_len,max_len)
     batch_x_mask = torch.zeros(batch_size,max_len)
-    batch_x_type = torch.ones(batch_size, max_len)*args.node_type_num#padding的节点类型
+    batch_x_type = torch.ones(batch_size, max_len)*args.node_type_num#
     batch_x_in_vsg = torch.zeros(batch_size, max_len)
     batch_x_in_usg = torch.zeros(batch_size, max_len)
     batch_isout = torch.zeros(batch_size,max_len)
@@ -435,7 +434,7 @@ def evaluation_v2(feat_path, data_path,dh_range, model, feat_matrix=None):
 
     barrier(hvd)
 
-    if len(data_files) == 256:  # full test时候才输出每个
+    if len(data_files) == 256:
         all_labels = np.array(labels)
         all_probs = np.array(probs)
         fpr, tpr, thresholds = metrics.roc_curve(all_labels, all_probs, pos_label=1)
@@ -536,7 +535,7 @@ def train():
             if is_master:
                 logger.info(train_path)
 
-            train_files = gen_input_fileds_with_hours(train_path,train_dh_range)  # 每个piece 256个文件，前234个做训练集，后16个做测试集
+            train_files = gen_input_fileds_with_hours(train_path,train_dh_range)  #
             if is_master:
                 logger.info('total train files count: %s'%len(train_files) )
             if hvd_size>8:
@@ -550,7 +549,7 @@ def train():
 
                 #logger.info('rank %s, train_%s [%s,%s]' % (hvd_rank,hvd_local_rank,int(node_rank*file_per_rank),int((node_rank+1)*file_per_rank)))
             barrier(hvd)
-            # 读取训练集
+            #
             train_dataset = SparkIterableDataset(train_files, shuffle=True,
                                                  negative_sampling_ratio=args.negative_sampling_ratio,min_neighbour_num=args.min_neb_num)
             train_loader = DataLoader(train_dataset, batch_size=args.batch_size, num_workers=8,
@@ -744,7 +743,7 @@ def save_feat_matrix2hdf5(ds, replace=False):
             return
     logger.info('Saving... rank %s, piece id %s' % (hvd_rank, hvd_rank//times))
     node_feat_files = gen_input_fileds(path)
-    feat_matrix = load_feat_dict_v2(node_feat_files)  # 返回的是一个字典
+    feat_matrix = load_feat_dict_v2(node_feat_files)  #
     if hvd_rank == 0:
         get_memory_info(logger)
 
@@ -793,7 +792,7 @@ test_dh_range =[int(i) for i in  args.test_dh_range.split('_')]
 
 
 
-#输出参数
+#
 barrier(hvd)
 if is_master:
     for key, val in vars(args).items():
