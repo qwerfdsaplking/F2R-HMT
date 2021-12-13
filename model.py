@@ -314,13 +314,13 @@ class HgsMultiHeadAttention(nn.Module):
                 out[idx] = x_i+residual[idx]
 
         #return self.output_linear(x)
-        x = x.view(batch_size, -1, self.head_num * self.d_k)
+        out = out.view(batch_size, -1, self.head_num * self.d_k)
 
         #ffn
         if self.use_ffn:
-            x = self.pos_ffn_layer(x)
+            out = self.pos_ffn_layer(out)
 
-        return x, _
+        return out, _
 
 
 def glorot(tensor):
